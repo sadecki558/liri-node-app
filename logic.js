@@ -77,8 +77,8 @@ function runCommand(command, argument) {
 
 
 }
-if (command === 'do-what-it-says') {
-	fs.readFile("random.txt", "utf-8", function (err, data) {
+if (command === 'song-title-here') {
+	fs.readFile("text-file-here", "utf-8", function (err, data) {
 		if (err) {
 			return console.log(error);
 		}
