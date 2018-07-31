@@ -21,7 +21,7 @@ function runCommand(command, argument) {
 		var client = new Twitter (twitter_keys.twitter);
 		
 		var params = {
-			screen_name: 'jkush80'
+			screen_name: 'user-name-goes-here'
 		};
 		client.get('statuses/user_timeline', params, function (error, tweets) {
 			if (!error) {
