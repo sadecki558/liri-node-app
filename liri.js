@@ -1,14 +1,11 @@
 require("dotenv").config();
 
 var twitter_keys = require("./keys.js");
-
 var spotify_keys = require("./keys.js");
-
-var Twitter = require("twitter");
-var Spotify = require("node-spotify-api");
 var request = require("request");
 var fs = require("fs");
-
+var Twitter = require("twitter");
+var Spotify = require("node-spotify-api");
 var command = process.argv[2];
 var argument = process.argv[3];
 
@@ -26,7 +23,6 @@ function runCommand(command, argument) {
 		client.get('statuses/user_timeline', params, function (error, tweets) {
 			if (!error) {
 				console.log("Tweets")
-				console.log("______________")
 				tweets.forEach((tweets) => {
 					console.log(tweets.created_at),
 					console.log(tweets.text)
@@ -47,10 +43,12 @@ function runCommand(command, argument) {
 			var artist = data.tracks.items[0].artists[0].name;
 			var songName = data.tracks.items[0].name;
 			var previewUrl = data.tracks.items[0].external_urls.spotify;
+			var albumName = data.tracks.items[0].album.name;
 
 			console.log("Artist: " + artist);
 			console.log("Song Name: " + songName);
-			console.log("preview url: " + previewUrl)
+			console.log("Preview URL: " + previewUrl);
+			console.log("Album Name: " + albumName);
 		});
 
 	} else if (command === 'movie-this') {
@@ -61,31 +59,26 @@ function runCommand(command, argument) {
 
 			if (!error && response.statusCode === 200) {
 
-				var res = JSON.parse(body);
-				console.log("Title: " + res.Title);
-				console.log("Year: " + res.Year);
-				console.log("IMDB Rating: " + res.imdbRating);
-				console.log("Rotten Tomatos Rating: " + res.Ratings[1]);
-				console.log("Country: " + res.Country);
-				console.log("Language: " + res.Language);
-				console.log("Plot: ", res.Plot);
-				console.log("Actors: ", res.Actors);
+				console.log("Title: " + JSON.parse(body).Title);
+				console.log("Year: " + JSON.parse(body).Year);
+				console.log("IMDB Rating: " + JSON.parse(body).Ratings[0].Value);
+				console.log("Rotten Tomatos Rating: " + JSON.parse(body).Ratings[1].Value);
+				console.log("Country: " + JSON.parse(body).Country);
+				console.log("Language: " + JSON.parse(body).Language);
+				console.log("Plot: ", JSON.parse(body).Plot);
+				console.log("Actors: ", JSON.parse(body).Actors);
 
 			}
 		});
-	}
-
-
-}
-if (command === 'song-title-here') {
-	fs.readFile("text-file-here", "utf-8", function (err, data) {
+	}else if (command === 'song-title-here') {
+	fs.readFile("random.txt", "utf-8", function (err, data) {
 		if (err) {
 			return console.log(error);
 		}
-		data = data.toString().split(",");
-		runCommand(data[0], data[1]);
+		input = data.toString().split(",");
+		runCommand(input[0], input[1]);
 	})
 
 } else {
 	runCommand(command, argument)
-}
+}}
